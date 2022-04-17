@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "sphinxcontrib-oembed"
-version = "0.1.0"
+version = "0.0.0"
 description = "Embed HTML content by URL from eEmbed consumer"
 authors = ["Kazuya Takei <myself@attakei.net>"]
 license = "Apache-2.0"
