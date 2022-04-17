@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "sphinxcontrib-oembed"
+version = "0.1.0"
+description = "Embed HTML content by URL from eEmbed consumer"
+authors = ["Kazuya Takei <myself@attakei.net>"]
+license = "Apache-2.0"
+packages = [
+    { include = "sphinxcontrib" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.7 | ^3.8 | ^3.9 | ^3.10"
+Sphinx = "*"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
