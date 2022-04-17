@@ -27,6 +27,8 @@ def find_endpoint(url) -> Optional[str]:
     for provider in load_providers():
         for endpoint in provider["endpoints"]:
             if "schemes" not in endpoint:
+                if url.startswith(provider["provider_url"]):
+                    return endpoint["url"]
                 continue
             for scheme in endpoint["schemes"]:
                 if fnmatch(url, scheme):
