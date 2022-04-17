@@ -4,6 +4,7 @@ from typing import Optional
 
 import requests
 from docutils import nodes
+from requests.exceptions import RequestException
 from sphinx.application import Sphinx
 from sphinx.util import logging
 from sphinx.util.docutils import SphinxDirective
@@ -50,8 +51,15 @@ class OembedDirective(SphinxDirective):  # noqa: D101
         try:
             endpoint = find_endpoint(url)
             resp = requests.get(endpoint, params={"url": url})
-            node["content"] = resp.json()
+            if resp.ok:
+                node["content"] = resp.json()
+            else:
+                logger.warning(
+                    f"Endpoint error '{resp.reason}' at {self.get_location()} - {url}"
+                )
         except EndpointNotFound as err:
+            logger.warning(f"{err} at {self.get_location()} - {url}")
+        except RequestException as err:
             logger.warning(f"{err} at {self.get_location()} - {url}")
         return [
             node,
