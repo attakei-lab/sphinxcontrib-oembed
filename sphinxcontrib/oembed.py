@@ -1,20 +1,27 @@
-import re
+from fnmatch import fnmatch
+from functools import lru_cache
+
 import requests
 from docutils import nodes
 from docutils.parsers.rst import Directive
 from sphinx.application import Sphinx
 
 
-SERVICES = {
-    r"^https://speakerdeck.com": "https://speakerdeck.com/oembed.json",
-    r"^https://twitter.com": "https://publish.twitter.com/oembed",
-}
+@lru_cache
+def load_providers():
+    resp = requests.get("https://oembed.com/providers.json")
+    return resp.json()
 
 
+@lru_cache
 def get_service_url(url):
-    for pattern, endpoint in SERVICES.items():
-        if re.search(pattern, url):
-            return endpoint
+    for provider in load_providers():
+        for endpoint in provider["endpoints"]:
+            if "schemes" not in endpoint:
+                continue
+            for scheme in endpoint["schemes"]:
+                if fnmatch(url, scheme):
+                    return endpoint["url"]
     raise Exception("Service is not found")
 
 
