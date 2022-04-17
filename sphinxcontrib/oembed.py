@@ -1,10 +1,19 @@
 from fnmatch import fnmatch
 from functools import lru_cache
+from typing import Optional
 
 import requests
 from docutils import nodes
-from docutils.parsers.rst import Directive
 from sphinx.application import Sphinx
+from sphinx.util import logging
+from sphinx.util.docutils import SphinxDirective
+
+
+logger = logging.getLogger(__name__)
+
+
+class EndpointNotFound(Exception):
+    pass
 
 
 @lru_cache
@@ -14,7 +23,7 @@ def load_providers():
 
 
 @lru_cache
-def get_service_url(url):
+def find_endpoint(url) -> Optional[str]:
     for provider in load_providers():
         for endpoint in provider["endpoints"]:
             if "schemes" not in endpoint:
@@ -22,29 +31,34 @@ def get_service_url(url):
             for scheme in endpoint["schemes"]:
                 if fnmatch(url, scheme):
                     return endpoint["url"]
-    raise Exception("Service is not found")
+    raise EndpointNotFound("Endpoint for URL is not found")
 
 
 class oembed(nodes.General, nodes.Element):  # noqa: D101,E501
     pass
 
 
-class OembedDirective(Directive):  # noqa: D101
+class OembedDirective(SphinxDirective):  # noqa: D101
     has_content = False
     required_arguments = 1
 
     def run(self):  # noqa: D102
         node = oembed()
         url = self.arguments[0]
-        resp = requests.get(get_service_url(url), params={"url": url})
-        node["content"] = resp.json()
+        try:
+            endpoint = find_endpoint(url)
+            resp = requests.get(endpoint, params={"url": url})
+            node["content"] = resp.json()
+        except EndpointNotFound as err:
+            logger.warning(f"{err} at {self.get_location()} - {url}")
         return [
             node,
         ]
 
 
 def visit_oembed_node(self, node):
-    self.body.append(node["content"]["html"])
+    if "content" in node and "html" in node["content"]:
+        self.body.append(node["content"]["html"])
 
 
 def depart_oembed_node(self, node):
