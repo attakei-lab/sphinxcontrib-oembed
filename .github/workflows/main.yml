@@ -18,6 +18,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           cache: 'poetry'
+      - run: pip install poetry
       - run: poetry install
       - run: poetry run black --check .
       - run: poetry run pytest

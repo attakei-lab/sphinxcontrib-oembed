@@ -25,6 +25,11 @@ stub_providers = [
 ]
 
 
+def test_loadable():
+    result = oembed.load_providers()
+    assert isinstance(result, list)
+
+
 def test_find_endpoint__found(monkeypatch: MonkeyPatch):
     monkeypatch.setattr(oembed, "load_providers", lambda: stub_providers)
     endpoint = oembed.find_endpoint("https://open.spotify.com/hello")
