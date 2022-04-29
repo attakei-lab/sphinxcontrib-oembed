@@ -17,13 +17,13 @@ class EndpointNotFound(Exception):
     pass
 
 
-@lru_cache
+@lru_cache(maxsize=None)
 def load_providers():
     resp = requests.get("https://oembed.com/providers.json")
     return resp.json()
 
 
-@lru_cache
+@lru_cache(maxsize=None)
 def find_endpoint(url) -> Optional[str]:
     for provider in load_providers():
         for endpoint in provider["endpoints"]:
