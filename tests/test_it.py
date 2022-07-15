@@ -1,4 +1,8 @@
+import textwrap
+
 import pytest
+from docutils import frontend, parsers, utils
+from docutils.parsers.rst import directives
 from pytest import MonkeyPatch
 from sphinxcontrib import oembed
 
@@ -19,6 +23,19 @@ stub_providers = [
         "endpoints": [
             {
                 "url": "https://www.beautiful.ai/api/oembed",
+            }
+        ],
+    },
+    {
+        "provider_name": "Reddit",
+        "provider_url": "https://reddit.com/",
+        "endpoints": [
+            {
+                "schemes": [
+                    "https://reddit.com/r/*/comments/*/*",
+                    "https://www.reddit.com/r/*/comments/*/*",
+                ],
+                "url": "https://www.reddit.com/oembed",
             }
         ],
     },
@@ -47,3 +64,20 @@ def test_find_endpoint__no_schemes(monkeypatch: MonkeyPatch, caplog):
     monkeypatch.setattr(oembed, "load_providers", lambda: stub_providers)
     endpoint = oembed.find_endpoint("https://www.beautiful.ai/deck/dummy")
     assert endpoint == "https://www.beautiful.ai/api/oembed"
+
+
+def test_directive__useragent(monkeypatch: MonkeyPatch, caplog):
+
+    source = textwrap.dedent(
+        """
+    .. oembed:: https://www.reddit.com/r/Python/comments/vdopqj/sphinxrevealjs_html_presentation_builder_for/
+    """
+    )
+    monkeypatch.setattr(oembed, "load_providers", lambda: stub_providers)
+    directives.register_directive("oembed", oembed.OembedDirective)
+    parser = parsers.get_parser_class("rst")()
+    document = utils.new_document(
+        "test", frontend.OptionParser(components=(parser,)).get_default_values()
+    )
+    parser.parse(source, document)
+    assert not caplog.records
