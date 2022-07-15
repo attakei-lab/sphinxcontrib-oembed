@@ -9,12 +9,16 @@ from sphinx.application import Sphinx
 from sphinx.util import logging
 from sphinx.util.docutils import SphinxDirective
 
-
+__version__ = "0.1.1"
 logger = logging.getLogger(__name__)
 
 
 class EndpointNotFound(Exception):
     pass
+
+
+def build_user_agent() -> str:
+    return __name__.replace(".", "-") + "/" + __version__
 
 
 @lru_cache(maxsize=None)
@@ -50,7 +54,12 @@ class OembedDirective(SphinxDirective):  # noqa: D101
         url = self.arguments[0]
         try:
             endpoint = find_endpoint(url)
-            resp = requests.get(endpoint, params={"url": url})
+            # TODO?: Change User-agent by user.
+            resp = requests.get(
+                endpoint,
+                params={"url": url},
+                headers={"user-agent": build_user_agent()},
+            )
             if resp.ok:
                 node["content"] = resp.json()
             else:
