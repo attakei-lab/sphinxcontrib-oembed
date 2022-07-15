@@ -1,10 +1,8 @@
-import textwrap
-
 import pytest
-from docutils import frontend, parsers, utils
-from docutils.parsers.rst import directives
 from pytest import MonkeyPatch
+from sphinx.testing.util import SphinxTestApp
 from sphinxcontrib import oembed
+
 
 stub_providers = [
     {
@@ -66,18 +64,7 @@ def test_find_endpoint__no_schemes(monkeypatch: MonkeyPatch, caplog):
     assert endpoint == "https://www.beautiful.ai/api/oembed"
 
 
-def test_directive__useragent(monkeypatch: MonkeyPatch, caplog):
-
-    source = textwrap.dedent(
-        """
-    .. oembed:: https://www.reddit.com/r/Python/comments/vdopqj/sphinxrevealjs_html_presentation_builder_for/
-    """
-    )
-    monkeypatch.setattr(oembed, "load_providers", lambda: stub_providers)
-    directives.register_directive("oembed", oembed.OembedDirective)
-    parser = parsers.get_parser_class("rst")()
-    document = utils.new_document(
-        "test", frontend.OptionParser(components=(parser,)).get_default_values()
-    )
-    parser.parse(source, document)
+@pytest.mark.sphinx("html", testroot="default")
+def test_build_with_directives(app: SphinxTestApp, status, warning, caplog):  # noqa
+    app.build()
     assert not caplog.records

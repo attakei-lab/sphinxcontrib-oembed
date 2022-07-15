@@ -54,11 +54,11 @@ class OembedDirective(SphinxDirective):  # noqa: D101
         url = self.arguments[0]
         try:
             endpoint = find_endpoint(url)
-            # TODO?: Change User-agent by user.
+            user_agent = self.config.oembed_useragent or build_user_agent()
             resp = requests.get(
                 endpoint,
                 params={"url": url},
-                headers={"user-agent": build_user_agent()},
+                headers={"user-agent": user_agent},
             )
             if resp.ok:
                 node["content"] = resp.json()
@@ -90,3 +90,4 @@ def setup(app: Sphinx):
         html=(visit_oembed_node, depart_oembed_node),
     )
     app.add_directive("oembed", OembedDirective)
+    app.add_config_value("oembed_useragent", None, "env")
