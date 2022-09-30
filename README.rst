@@ -12,11 +12,9 @@ Overview
 Installation
 ============
 
-Install package from GitHub Releases.
-
 .. code-block:: console
 
-   pip install --find-links=https://github.com/attakei-lab/sphinxcontrib-oembed/releases sphinxcontrib-oembed
+   pip install sphinxcontrib-oembed
 
 Usage
 =====
@@ -35,6 +33,11 @@ Add this extension into your ``conf.py`` of Sphinx.
 
 Canges
 ======
+
+v0.2.1
+------
+
+* Published on PyPI
 
 v0.2.0
 ------
