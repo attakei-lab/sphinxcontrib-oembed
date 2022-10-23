@@ -22,3 +22,11 @@ YouTube
    .. oembed:: https://www.youtube.com/watch?v=Oyh8nuaLASA
 
 .. oembed:: https://www.youtube.com/watch?v=Oyh8nuaLASA
+
+.. code-block:: rst
+
+   .. oembed:: https://www.youtube.com/watch?v=Oyh8nuaLASA
+      :maxwidth: 640
+
+.. oembed:: https://www.youtube.com/watch?v=Oyh8nuaLASA
+   :maxwidth: 640

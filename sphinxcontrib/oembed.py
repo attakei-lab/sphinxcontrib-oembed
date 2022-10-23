@@ -7,7 +7,7 @@ from docutils import nodes
 from requests.exceptions import RequestException
 from sphinx.application import Sphinx
 from sphinx.util import logging
-from sphinx.util.docutils import SphinxDirective
+from sphinx.util.docutils import SphinxDirective, directives
 
 __version__ = "0.2.1"
 logger = logging.getLogger(__name__)
@@ -48,6 +48,10 @@ class oembed(nodes.General, nodes.Element):  # noqa: D101,E501
 class OembedDirective(SphinxDirective):  # noqa: D101
     has_content = False
     required_arguments = 1
+    option_spec = {
+        "maxwidth": directives.positive_int,
+        "maxheight": directives.positive_int,
+    }
 
     def run(self):  # noqa: D102
         node = oembed()
@@ -57,7 +61,7 @@ class OembedDirective(SphinxDirective):  # noqa: D101
             user_agent = self.config.oembed_useragent or build_user_agent()
             resp = requests.get(
                 endpoint,
-                params={"url": url},
+                params={"url": url, **self.options},
                 headers={"user-agent": user_agent},
             )
             if resp.ok:
