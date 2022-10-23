@@ -1,20 +1,24 @@
-.. sphinxcontrib-oembed documentation master file, created by
-   sphinx-quickstart on Sun Oct 23 17:14:30 2022.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+====================
+sphinxcontrib-oembed
+====================
 
-Welcome to sphinxcontrib-oembed's documentation!
-================================================
+Showcase
+========
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+Twitter
+-------
 
+.. code-block:: rst
 
+   .. oembed:: https://twitter.com/attakei/status/1584075074503868419
 
-Indices and tables
-==================
+.. oembed:: https://twitter.com/attakei/status/1584075074503868419
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+YouTube
+-------
+
+.. code-block:: rst
+
+   .. oembed:: https://www.youtube.com/watch?v=Oyh8nuaLASA
+
+.. oembed:: https://www.youtube.com/watch?v=Oyh8nuaLASA
