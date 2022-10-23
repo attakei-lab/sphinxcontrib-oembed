@@ -7,10 +7,17 @@ Embed HTML content by URL from eEmbed consumer
 Overview
 ========
 
-.. note:: Writing later
+This is Sphinx extension to provide easy embed some third-party websites content.
+
+Example for embed tweet from Twitter:
+
+* In defaults, you use ``raw`` directive, get and paste blockquuote and script tags from Twitter Publish.
+* With this, you use ``oembed`` and paste tweet URL only!
 
 Installation
 ============
+
+This is registered in PyPI.
 
 .. code-block:: console
 
@@ -31,8 +38,8 @@ Add this extension into your ``conf.py`` of Sphinx.
    # Default is sphinxcontrib-oembed/{ext-version}
    obmed_useragent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0"
 
-Canges
-======
+Changes
+=======
 
 v0.2.1
 ------
