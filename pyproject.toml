@@ -4,13 +4,13 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "sphinxcontrib-oembed"
-version = "0.2.1"
+version = "0.2.2"
 description = "Embed HTML content by URL from eEmbed consumer"
 authors = [{name = "Kazuya Takei", email = "myself@attakei.net"}]
 readme = "README.rst"
 license = {file = "LICENSE"}
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 7 - Inactive",
     "Framework :: Sphinx",
     "Framework :: Sphinx :: Extension",
     "Intended Audience :: Developers",

@@ -9,7 +9,7 @@ from sphinx.application import Sphinx
 from sphinx.util import logging
 from sphinx.util.docutils import SphinxDirective
 
-__version__ = "0.2.1"
+__version__ = "0.2.2"
 logger = logging.getLogger(__name__)
 
 
