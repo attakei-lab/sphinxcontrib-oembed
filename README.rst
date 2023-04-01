@@ -4,6 +4,13 @@ sphinxcontrib-oembed
 
 Embed HTML content by URL from eEmbed consumer
 
+.. caution:: DEPRECATED
+
+   This extension is stopped developmnent.
+   `oEmbedPy <https://pypi.org/project/oEmbedPy>`_ contains same features of it and is more useful.
+
+   Please use oEmbedPy instead.
+
 Overview
 ========
 

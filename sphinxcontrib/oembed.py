@@ -85,6 +85,9 @@ def depart_oembed_node(self, node):
 
 
 def setup(app: Sphinx):
+    logger.warning(
+        f"{__name__} is deprecated on {__version__}. Please use 'oEmbedPy' and 'oembedpy.ext.sphinx' instead."
+    )
     app.add_node(
         oembed,
         html=(visit_oembed_node, depart_oembed_node),
